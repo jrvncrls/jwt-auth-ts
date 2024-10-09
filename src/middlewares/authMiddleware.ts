@@ -13,9 +13,7 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction,
 ): void => {
-  console.log(req.cookies);
   const token = req.cookies.jwt_token;
-  console.log(token);
 
   if (!token) {
     res
@@ -26,7 +24,6 @@ export const authenticateToken = (
 
   try {
     jwt.verify(token, secret, (err: Error | null, user: any) => {
-      console.log(user);
       if (err) {
         return res
           .status(403)

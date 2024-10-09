@@ -132,3 +132,27 @@ export const getUserById = async (
     });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie('jwt_token', { path: '/', secure: true, httpOnly: true });
+
+    res.status(200).json({
+      isError: false,
+      message: 'Logout successful',
+    });
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
+    const errorStack =
+      error instanceof Error && !isProduction ? error.stack : null;
+
+    res.status(500).json({
+      message: 'Error logout user',
+      error: {
+        message: errorMessage,
+        ...(errorStack && { stack: errorStack }), // Include stack only in non-production
+      },
+    });
+  }
+};
